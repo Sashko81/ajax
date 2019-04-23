@@ -1,3 +1,4 @@
+// html request
 document.querySelector('.page-loaded')
 .innerText = (new Date()).toLocaleTimeString();
 document.querySelector('.ajax-get-html')
@@ -13,7 +14,7 @@ function ajaxGetHtml () {
     xhr.open('GET', 'client-data.html', true);
     xhr.send();
 }
-///
+// json request
 document.querySelector('.page-loaded')
 .innerText = (new Date()).toLocaleTimeString();
 document.querySelector('.ajax-get-json')
@@ -29,4 +30,33 @@ function ajaxGetJson () {
     }
     xhr.open('GET', 'client-data.json', true);
     xhr.send();
+}
+// sample of currency
+
+window.addEventListener('load', getCurrency);
+document.querySelector('.update-currency')
+.innerText = (new Date()).toLocaleTimeString();
+document.querySelector('.ajax-get-json')
+.addEventListener('click', getCurrency);
+function getCurrency () {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState ===4 && xhr.status === 200) {
+         const currency = JSON.parse(xhr.responseText)
+         document.querySelector('.currency-container')
+         .innerText = currency['USD_UAH'].val;
+         document.querySelector('.client-account').innerText = clientData.account;
+        }
+    }
+    xhr.open('GET', 'https://free.currencyconverterapi.com/api/v5/convert?q=USD_UAH&compact=y', true);
+    xhr.send();
+}
+
+//FETCH
+document.querySelector('.fetch-get-html')
+addEventListener('click', fetchGetHtml);
+function fetchGetHtml () {
+    fetch('client-data.html')
+    .then (result => result.text() )
+    .then (html => document.querySelector ('.html-container').innerHTML = html);
 }
